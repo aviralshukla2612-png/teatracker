@@ -1,0 +1,75 @@
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid #E2E8F0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.summary-icon {
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* Variant Styling */
+.summary-card.variant-tea .summary-icon {
+  background: var(--primary-light);
+  color: #4CAF50;
+}
+
+.summary-card.variant-coffee .summary-icon {
+  background: var(--coffee-light);
+  color: #8D6E63;
+}
+
+.summary-card.variant-total-cups .summary-icon {
+  background: var(--cups-light);
+  color: #2196F3;
+}
+
+.summary-card.variant-expense .summary-icon {
+  background: var(--expense-light);
+  color: #4CAF50;
+}
+
+.summary-content {
+  flex: 1;
+}
+
+.summary-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.summary-main {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.summary-sub {
+  font-size: 12px;
+  color: #10B981; /* Green up arrow color */
+  font-weight: 500;
+}
+
+.summary-sub::before {
+  content: '▲ ';
+  font-size: 10px;
+}

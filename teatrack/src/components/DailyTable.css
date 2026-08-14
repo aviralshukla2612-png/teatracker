@@ -1,0 +1,205 @@
+.table-responsive {
+  overflow-x: auto;
+}
+
+.daily-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.daily-table th,
+.daily-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.daily-table th {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: var(--bg-color);
+}
+
+.daily-table td {
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.daily-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.daily-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Date cell */
+.entry-date {
+  font-weight: 500;
+}
+
+.entry-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Value badges */
+.tea-count {
+  color: #0B7A45;
+  font-weight: 600;
+}
+
+.coffee-count {
+  color: #92400E;
+  font-weight: 600;
+}
+
+.amount-badge {
+  font-weight: 600;
+  color: var(--primary-green);
+}
+
+/* Action cell */
+.action-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Base button */
+.tbl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.18s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+/* Edit — green outline + green icon by default */
+.tbl-edit-btn {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+}
+
+/* Delete — red outline + red icon by default */
+.tbl-delete-btn {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Edit button hover → solid green fill, white icon */
+.tbl-edit-btn:hover {
+  background: var(--primary-green);
+  border-color: var(--primary-green);
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(23, 107, 69, 0.25);
+}
+
+/* Delete button hover → soft red fill, deeper red icon */
+.tbl-delete-btn:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #dc2626;
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.2);
+}
+
+/* ── Mobile Card Layout ── */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: hidden;
+  }
+
+  /* Hide the table header on mobile */
+  .daily-table thead {
+    display: none;
+  }
+
+  .daily-table,
+  .daily-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  /* Each row → its own card */
+  .daily-table tr {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    gap: 6px;
+  }
+
+  /* All cells: label left, value right */
+  .daily-table td {
+    padding: 2px 0;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  /* Date cell — full width header */
+  .daily-table td:nth-child(1) {
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 8px;
+    margin-bottom: 2px;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .entry-date {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-main);
+  }
+
+  .entry-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 0;
+  }
+
+  /* Labels for each row */
+  .daily-table td:nth-child(2):before { content: "🍵 Tea"; color: #B8793E; font-weight: 500; }
+  .daily-table td:nth-child(3):before { content: "☕ Coffee"; color: #6F4930; font-weight: 500; }
+  .daily-table td:nth-child(4):before { content: "Total Cups"; color: var(--text-muted); font-weight: 500; }
+  .daily-table td:nth-child(5):before { content: "Amount"; color: var(--primary-green); font-weight: 600; }
+
+  /* Action buttons row */
+  .daily-table td:nth-child(6) {
+    justify-content: flex-end;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+
+  .tbl-btn {
+    width: 32px;
+    height: 32px;
+  }
+}

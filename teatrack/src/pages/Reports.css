@@ -1,0 +1,287 @@
+.reports-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* KPI Row */
+.reports-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.kpi-card {
+  background: #fff;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: center;
+  transition: box-shadow 0.2s;
+}
+
+.kpi-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.kpi-unit {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.tea-color { color: #B8793E; }
+.coffee-color { color: #6F4930; }
+.green-color { color: #063A26; }
+
+/* Highlight */
+.reports-highlight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #E8F5E9, #f0fdf4);
+  border-left: 4px solid var(--primary-green);
+}
+
+.highlight-badge {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-green);
+  white-space: nowrap;
+}
+
+.highlight-text {
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+/* Filter */
+.reports-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+}
+
+.filter-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.filter-input {
+  width: 110px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+/* Table */
+.reports-table-card {
+  padding: 24px;
+}
+
+.reports-table-wrapper {
+  overflow-x: auto;
+}
+
+.reports-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.reports-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-bottom: 2px solid #E2E8F0;
+  white-space: nowrap;
+}
+
+.reports-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.reports-table th.sortable:hover {
+  color: var(--primary-green);
+}
+
+.reports-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.reports-table tr.even-row td {
+  background: #FAFBFC;
+}
+
+.reports-table tbody tr:hover td {
+  background: #F0FDF4;
+}
+
+.tea-badge {
+  background: #FFF3E0;
+  color: #B8793E;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.coffee-badge {
+  background: #EFEBE9;
+  color: #6F4930;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.table-footer-row td {
+  border-top: 2px solid #E2E8F0;
+  border-bottom: none;
+  padding-top: 14px;
+  font-size: 14px;
+}
+
+.no-data-cell {
+  text-align: center;
+  padding: 40px !important;
+  color: var(--text-muted);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .reports-page {
+    max-width: 100%;
+  }
+
+  .reports-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .reports-filter {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .filter-input {
+    width: 100%;
+  }
+
+  .reports-highlight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 12px 14px;
+  }
+
+  .reports-table-card {
+    padding: 14px;
+  }
+
+  /* ── Card layout for table on mobile ── */
+  .reports-table-wrapper {
+    overflow-x: hidden;
+  }
+
+  .reports-table,
+  .reports-table tbody,
+  .reports-table tfoot {
+    display: block;
+    width: 100%;
+  }
+
+  /* Hide the header completely on mobile */
+  .reports-table thead {
+    display: none;
+  }
+
+  /* Each table row becomes a card */
+  .reports-table tbody tr,
+  .reports-table tfoot tr {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    gap: 6px;
+  }
+
+  .reports-table tfoot tr {
+    background: #F0FDF4;
+    border-color: #cce3d5;
+  }
+
+  /* All cells: label on left, value on right */
+  .reports-table td {
+    padding: 2px 0;
+    border: none;
+    background: transparent !important;
+    white-space: normal;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  /* ── Date: full-width header at top ── */
+  .reports-table td:nth-child(1) {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-main);
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 8px;
+    margin-bottom: 2px;
+  }
+
+  /* ── Label before each value (left side) ── */
+  .reports-table td:nth-child(2):before { content: "🍵 Tea"; color: #B8793E; font-weight: 500; }
+  .reports-table td:nth-child(3):before { content: "☕ Coffee"; color: #6F4930; font-weight: 500; }
+  .reports-table td:nth-child(4):before { content: "Total Cups"; color: var(--text-muted); font-weight: 500; }
+  .reports-table td:nth-child(5):before { content: "Expense"; color: var(--primary-green); font-weight: 600; }
+  .reports-table td:nth-child(6):before { content: "Added by"; color: var(--text-muted); font-weight: 500; }
+
+}
+
+@media (max-width: 400px) {
+  .reports-kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .kpi-value {
+    font-size: 18px;
+  }
+}
+

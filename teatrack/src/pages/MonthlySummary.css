@@ -1,0 +1,141 @@
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-title {
+  margin-bottom: 24px;
+  font-size: 18px;
+}
+
+.css-chart-container {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  background: var(--bg-color);
+  border-radius: var(--radius-md);
+  padding: 24px 24px 0 24px;
+  min-height: 300px;
+}
+
+.no-data {
+  width: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  align-self: center;
+}
+
+.css-chart {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  width: 100%;
+  height: 250px;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+
+.bar {
+  width: 30px;
+  background: linear-gradient(180deg, var(--primary-green) 0%, rgba(23, 107, 69, 0.5) 100%);
+  border-radius: 4px 4px 0 0;
+  min-height: 4px;
+  transition: height 0.5s ease, background 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.bar:hover {
+  background: var(--primary-green);
+}
+
+.bar-tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-main);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.bar:hover .bar-tooltip {
+  opacity: 1;
+}
+
+.bar-label {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .css-chart-container {
+    padding: 12px 12px 0 12px;
+    min-height: 220px;
+  }
+
+  .css-chart {
+    height: 200px;
+    gap: 4px;
+  }
+
+  .bar {
+    width: 20px;
+  }
+
+  .bar-label {
+    font-size: 10px;
+    margin-top: 8px;
+  }
+
+  .chart-title {
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+}
