@@ -9,6 +9,7 @@ export default function UserManagement({ currentUser }) {
   const [isAdding, setIsAdding] = useState(false);
   const [newSubAdmin, setNewSubAdmin] = useState({ name: '', email: '', password: '' });
   const [isEditing, setIsEditing] = useState(false);
+  const [isViewing, setIsViewing] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [showPassAdd, setShowPassAdd] = useState(false);
   const [showPassEdit, setShowPassEdit] = useState(false);
@@ -72,6 +73,11 @@ export default function UserManagement({ currentUser }) {
     setIsEditing(true);
   };
 
+  const handleViewClick = (user) => {
+    setEditingUser({ id: user.id, name: user.name, email: user.email, password: '' });
+    setIsViewing(true);
+  };
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -133,10 +139,17 @@ export default function UserManagement({ currentUser }) {
                         <>
                           <button 
                             className="btn btn-sm btn-outline" 
+                            onClick={() => handleViewClick(user)}
+                            title="View"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                          </button>
+                          <button 
+                            className="btn btn-sm btn-outline" 
                             onClick={() => handleEditClick(user)}
                             title="Edit"
                           >
-                            ✏️
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                           </button>
                           <button 
                             className="btn btn-sm btn-outline" 
@@ -150,7 +163,7 @@ export default function UserManagement({ currentUser }) {
                             onClick={() => handleDelete(user.id)}
                             title="Delete"
                           >
-                            🗑️
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                           </button>
                         </>
                       )}
@@ -277,6 +290,40 @@ export default function UserManagement({ currentUser }) {
               <div className="um-modal-actions">
                 <button type="button" className="btn btn-outline" onClick={() => setIsEditing(false)}>Cancel</button>
                 <button type="submit" className="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* View Sub Admin Modal */}
+      {isViewing && (
+        <div className="um-modal-overlay" onClick={() => setIsViewing(false)}>
+          <div className="um-modal" onClick={e => e.stopPropagation()}>
+            <h3 className="um-modal-title">View Sub Admin</h3>
+            <form>
+              <div className="um-form-group">
+                <label>Name</label>
+                <input 
+                  type="text" 
+                  className="form-input"
+                  value={editingUser.name}
+                  readOnly
+                  style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}
+                />
+              </div>
+              <div className="um-form-group">
+                <label>Email Address</label>
+                <input 
+                  type="email" 
+                  className="form-input"
+                  value={editingUser.email}
+                  readOnly
+                  style={{ backgroundColor: '#f1f5f9', color: '#64748b' }}
+                />
+              </div>
+              <div className="um-modal-actions">
+                <button type="button" className="btn btn-primary" onClick={() => setIsViewing(false)}>Close</button>
               </div>
             </form>
           </div>

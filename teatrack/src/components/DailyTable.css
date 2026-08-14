@@ -91,6 +91,12 @@
   padding: 0;
 }
 
+/* View — blue outline + blue icon by default */
+.tbl-view-btn {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
 /* Edit — green outline + green icon by default */
 .tbl-edit-btn {
   border-color: var(--primary-green);
@@ -101,6 +107,15 @@
 .tbl-delete-btn {
   border-color: #ef4444;
   color: #ef4444;
+}
+
+/* View button hover → solid blue fill, white icon */
+.tbl-view-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.25);
 }
 
 /* Edit button hover → solid green fill, white icon */

@@ -157,7 +157,15 @@ function App() {
               />
             )}
             {currentView === 'dailyEntry' && (
-              <DailyEntry entries={entries} onAddEntry={addEntry} currentUser={currentUser} />
+              <DailyEntry 
+                entries={entries} 
+                onAddEntry={addEntry} 
+                onEditEntry={editEntry}
+                onDeleteEntry={deleteEntry}
+                teaRate={teaRate}
+                coffeeRate={coffeeRate}
+                currentUser={currentUser} 
+              />
             )}
             {currentView === 'monthly' && (
               <MonthlySummary entries={entries} teaRate={teaRate} coffeeRate={coffeeRate} />

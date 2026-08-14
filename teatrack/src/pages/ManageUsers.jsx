@@ -137,6 +137,7 @@ function ConfirmModal({ user, onConfirm, onClose }) {
 export default function ManageUsers({ subAdmins, setSubAdmins, currentUser }) {
   const [showModal, setShowModal] = useState(false);
   const [editUser, setEditUser] = useState(null);
+  const [viewUser, setViewUser] = useState(null);
   const [deleteUser, setDeleteUser] = useState(null);
   const [search, setSearch] = useState('');
   const [toast, setToast] = useState(null);
@@ -284,11 +285,14 @@ export default function ManageUsers({ subAdmins, setSubAdmins, currentUser }) {
                 >
                   {user.status === 'Active' ? '⛔ Deactivate' : '✅ Activate'}
                 </button>
+                <button className="btn-action view-btn" onClick={() => setViewUser(user)} title="View" style={{ backgroundColor: 'transparent', border: '1px solid #3b82f6', color: '#3b82f6' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '4px'}}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View
+                </button>
                 <button className="btn-action edit-btn" onClick={() => setEditUser(user)} title="Edit">
-                  ✏️ Edit
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '4px'}}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit
                 </button>
                 <button className="btn-action delete-btn" onClick={() => setDeleteUser(user)} title="Delete">
-                  🗑️
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                 </button>
               </div>
             </div>
@@ -310,6 +314,33 @@ export default function ManageUsers({ subAdmins, setSubAdmins, currentUser }) {
           onSave={handleEdit}
           onClose={() => setEditUser(null)}
         />
+      )}
+      {viewUser && (
+        <div className="modal-overlay" onClick={() => setViewUser(null)}>
+          <div className="modal-card" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>View Sub Admin</h3>
+              <button className="modal-close-btn" onClick={() => setViewUser(null)}>✕</button>
+            </div>
+            <div className="modal-form">
+              <div className="form-group">
+                <label className="form-label">Full Name</label>
+                <input className="form-input" value={viewUser.name} readOnly style={{ backgroundColor: '#f1f5f9', color: '#64748b' }} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Email Address</label>
+                <input className="form-input" value={viewUser.email} readOnly style={{ backgroundColor: '#f1f5f9', color: '#64748b' }} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Status</label>
+                <input className="form-input" value={viewUser.status} readOnly style={{ backgroundColor: '#f1f5f9', color: '#64748b' }} />
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="btn btn-primary" onClick={() => setViewUser(null)}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
       {deleteUser && (
         <ConfirmModal

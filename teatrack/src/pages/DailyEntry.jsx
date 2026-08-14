@@ -3,8 +3,25 @@ import DailyTable from '../components/DailyTable';
 import AddEntryModal from '../components/AddEntryModal';
 import './Page.css';
 
-export default function DailyEntry({ entries, onAddEntry, currentUser }) {
+export default function DailyEntry({ entries, onAddEntry, onEditEntry, onDeleteEntry, teaRate, coffeeRate, currentUser }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEntry, setEditingEntry] = useState(null);
+
+  const handleEdit = (entry) => {
+    setEditingEntry(entry);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this entry?')) {
+      onDeleteEntry(id);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingEntry(null);
+  };
 
   return (
     <div className="page-container">
@@ -13,19 +30,29 @@ export default function DailyEntry({ entries, onAddEntry, currentUser }) {
           <h2>Daily Entries</h2>
           <p className="text-muted">Manage your daily tea and coffee consumption.</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
+        <button className="btn btn-primary" onClick={() => { setEditingEntry(null); setIsModalOpen(true); }}>
           + Add Entry
         </button>
       </div>
 
       <div className="card">
-        <DailyTable entries={entries} />
+        <DailyTable 
+          entries={entries} 
+          onEdit={handleEdit} 
+          onDelete={handleDelete} 
+          currentUser={currentUser} 
+        />
       </div>
 
       {isModalOpen && (
         <AddEntryModal 
-          onClose={() => setIsModalOpen(false)}
-          onAdd={onAddEntry}
+          onClose={handleModalClose}
+          onSave={onAddEntry}
+          onEdit={onEditEntry}
+          editingEntry={editingEntry}
+          existingEntries={entries}
+          teaRate={teaRate}
+          coffeeRate={coffeeRate}
           currentUser={currentUser}
         />
       )}

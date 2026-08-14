@@ -25,7 +25,8 @@ export default function Loader({ onComplete }) {
     }, intervalTime);
 
     return () => clearInterval(interval);
-  }, [onComplete]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={`loader-container ${progress === 100 ? 'fade-out' : ''}`}>
