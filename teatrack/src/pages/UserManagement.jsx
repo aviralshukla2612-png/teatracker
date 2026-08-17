@@ -122,19 +122,19 @@ export default function UserManagement({ currentUser }) {
               <tbody>
                 {users.map(user => (
                   <tr key={user.id}>
-                    <td><strong>{user.name}</strong></td>
-                    <td>{user.email}</td>
-                    <td>
+                    <td data-label="Name"><strong>{user.name}</strong></td>
+                    <td data-label="Email">{user.email}</td>
+                    <td data-label="Role">
                       <span className={`um-role-badge um-role-${user.role}`}>
                         {user.role === 'super_admin' ? 'Super Admin' : 'Sub Admin'}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Status">
                       <span className={`um-status-badge um-status-${user.active ? 'active' : 'inactive'}`}>
                         {user.active ? 'Active' : 'Inactive'}
                       </span>
                     </td>
-                    <td className="text-right um-actions">
+                    <td data-label="Actions" className="text-right um-actions">
                       {user.role === 'sub_admin' && (
                         <>
                           <button 
