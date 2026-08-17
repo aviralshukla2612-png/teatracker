@@ -235,9 +235,10 @@
   }
   
   .um-actions {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
     justify-content: flex-end;
     width: 100%;
-    flex-wrap: wrap;
     gap: 8px;
   }
 }

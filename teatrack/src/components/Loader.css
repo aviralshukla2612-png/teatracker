@@ -4,12 +4,15 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  /* Use small viewport height if supported (fixes mobile browser address bar issues) */
+  height: 100dvh;
   background-color: #0A0F0D;
   color: white;
   z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 60px;
+  box-sizing: border-box;
   transition: opacity 0.8s ease-in-out;
 }
 
@@ -19,9 +22,7 @@
 }
 
 .loader-progress {
-  position: absolute;
-  top: 60px;
-  left: 60px;
+  justify-self: start;
   font-size: 160px;
   font-weight: 300;
   line-height: 1;
@@ -31,6 +32,8 @@
 }
 
 .loader-video-wrapper {
+  justify-self: center;
+  align-self: center;
   width: 420px;
   height: 600px;
   border-radius: 16px;
@@ -47,9 +50,7 @@
 }
 
 .loader-text {
-  position: absolute;
-  bottom: 60px;
-  left: 60px;
+  justify-self: start;
   font-size: 32px;
   font-weight: 500;
   line-height: 1.25;
@@ -57,10 +58,11 @@
 }
 
 @media (max-width: 1024px) {
+  .loader-container {
+    padding: 40px;
+  }
   .loader-progress {
     font-size: 100px;
-    top: 40px;
-    left: 40px;
   }
   .loader-video-wrapper {
     width: 340px;
@@ -68,16 +70,15 @@
   }
   .loader-text {
     font-size: 28px;
-    bottom: 40px;
-    left: 40px;
   }
 }
 
 @media (max-width: 768px) {
+  .loader-container {
+    padding: 30px;
+  }
   .loader-progress {
     font-size: 72px;
-    top: 30px;
-    left: 30px;
   }
   .loader-video-wrapper {
     width: 260px;
@@ -85,7 +86,5 @@
   }
   .loader-text {
     font-size: 22px;
-    bottom: 30px;
-    left: 30px;
   }
 }
