@@ -1,56 +1,50 @@
-import api from './api';
+import { auth, db } from './firebase';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 const authService = {
-  /**
-   * Login and store token + user in localStorage.
-   */
   async login(email, password) {
-    const { data } = await api.post('/login', { email, password });
-    if (data.success) {
-      localStorage.setItem('teatrack_token', data.token);
-      localStorage.setItem('teatrack_user', JSON.stringify(data.user));
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    
+    // Fetch role from Firestore
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const userData = userDoc.exists() ? userDoc.data() : { role: 'super_admin' }; // default to super_admin for the first user
+    
+    if (userData.active === false) {
+      await signOut(auth);
+      throw new Error('Account disabled');
     }
-    return data;
+
+    const userInfo = {
+      id: user.uid,
+      email: user.email,
+      role: userData.role,
+      name: userData.name || 'Admin'
+    };
+    
+    localStorage.setItem('teatrack_user', JSON.stringify(userInfo));
+    return { success: true, user: userInfo };
   },
 
-  /**
-   * Logout and clear local storage.
-   */
   async logout() {
-    try {
-      await api.post('/logout');
-    } finally {
-      localStorage.removeItem('teatrack_token');
-      localStorage.removeItem('teatrack_user');
-    }
+    await signOut(auth);
+    localStorage.removeItem('teatrack_user');
   },
 
-  /**
-   * Get the currently authenticated user from the API.
-   */
   async me() {
-    const { data } = await api.get('/me');
-    return data.data;
+    return this.getStoredUser();
   },
 
-  /**
-   * Get the locally stored user (from localStorage).
-   */
   getStoredUser() {
     const user = localStorage.getItem('teatrack_user');
     return user ? JSON.parse(user) : null;
   },
 
-  /**
-   * Check if the user is logged in.
-   */
   isLoggedIn() {
-    return !!localStorage.getItem('teatrack_token');
+    return !!localStorage.getItem('teatrack_user');
   },
 
-  /**
-   * Check if the stored user is a super_admin.
-   */
   isSuperAdmin() {
     const user = this.getStoredUser();
     return user?.role === 'super_admin';

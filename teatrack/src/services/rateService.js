@@ -1,22 +1,26 @@
-import api from './api';
+import { db } from './firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const rateService = {
-  /**
-   * Get current tea and coffee rates.
-   * Accessible by both super_admin and sub_admin.
-   */
   async get() {
-    const { data } = await api.get('/rates');
-    return data;
+    const docRef = doc(db, 'settings', 'rates');
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      return { data: docSnap.data() };
+    } else {
+      // Default rates
+      return { data: { teaRate: 10, coffeeRate: 15 } };
+    }
   },
 
-  /**
-   * Update rates. Super Admin only.
-   * Sub Admin will receive a 403 error from the server.
-   */
   async update(teaRate, coffeeRate) {
-    const { data } = await api.put('/rates', { teaRate, coffeeRate });
-    return data;
+    const docRef = doc(db, 'settings', 'rates');
+    await setDoc(docRef, {
+      teaRate: parseFloat(teaRate),
+      coffeeRate: parseFloat(coffeeRate)
+    });
+    return { data: { teaRate, coffeeRate } };
   },
 };
 

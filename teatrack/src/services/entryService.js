@@ -1,58 +1,77 @@
-import api from './api';
+import { db } from './firebase';
+import { collection, doc, getDocs, getDoc, addDoc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import rateService from './rateService';
 
 const entryService = {
-  /**
-   * Get all entries, optionally filtered by month and year.
-   */
   async getAll(month = null, year = null) {
-    const params = {};
-    if (month) params.month = month;
-    if (year)  params.year  = year;
-    const { data } = await api.get('/entries', { params });
-    return data;
+    const entriesRef = collection(db, 'entries');
+    // Simplified query, fetching all and filtering client-side for ease
+    const q = query(entriesRef, orderBy('date', 'desc'));
+    const querySnapshot = await getDocs(q);
+    
+    let entries = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    if (month && year) {
+      entries = entries.filter(entry => {
+        const d = new Date(entry.date);
+        return d.getMonth() + 1 === parseInt(month) && d.getFullYear() === parseInt(year);
+      });
+    }
+
+    return { data: entries };
   },
 
-  /**
-   * Get a single entry by ID.
-   */
   async getById(id) {
-    const { data } = await api.get(`/entries/${id}`);
-    return data;
+    const docRef = doc(db, 'entries', id);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) throw new Error('Entry not found');
+    return { data: { id: docSnap.id, ...docSnap.data() } };
   },
 
-  /**
-   * Create a new entry.
-   * Backend calculates all expenses from current rates.
-   */
   async create(date, teaQuantity, coffeeQuantity) {
-    const { data } = await api.post('/entries', {
+    const { data: rates } = await rateService.get();
+    
+    const teaQ = parseInt(teaQuantity) || 0;
+    const coffeeQ = parseInt(coffeeQuantity) || 0;
+    const teaRate = rates.teaRate;
+    const coffeeRate = rates.coffeeRate;
+    const total_expense = (teaQ * teaRate) + (coffeeQ * coffeeRate);
+
+    const docRef = await addDoc(collection(db, 'entries'), {
       date,
-      tea_quantity:    teaQuantity,
-      coffee_quantity: coffeeQuantity,
+      tea_quantity: teaQ,
+      coffee_quantity: coffeeQ,
+      tea_rate: teaRate,
+      coffee_rate: coffeeRate,
+      total_expense
     });
-    return data;
+
+    return { data: { id: docRef.id } };
   },
 
-  /**
-   * Update an existing entry.
-   * Backend recalculates using snapshot rates stored in the entry.
-   */
   async update(id, teaQuantity, coffeeQuantity, date = null) {
-    const payload = {
-      tea_quantity:    teaQuantity,
-      coffee_quantity: coffeeQuantity,
+    const docRef = doc(db, 'entries', id);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) throw new Error('Entry not found');
+
+    const entry = docSnap.data();
+    const teaQ = parseInt(teaQuantity) || 0;
+    const coffeeQ = parseInt(coffeeQuantity) || 0;
+    
+    const updates = {
+      tea_quantity: teaQ,
+      coffee_quantity: coffeeQ,
+      total_expense: (teaQ * entry.tea_rate) + (coffeeQ * entry.coffee_rate)
     };
-    if (date) payload.date = date;
-    const { data } = await api.put(`/entries/${id}`, payload);
-    return data;
+    if (date) updates.date = date;
+
+    await updateDoc(docRef, updates);
+    return { success: true };
   },
 
-  /**
-   * Delete an entry by ID.
-   */
   async delete(id) {
-    const { data } = await api.delete(`/entries/${id}`);
-    return data;
+    await deleteDoc(doc(db, 'entries', id));
+    return { success: true };
   },
 };
 

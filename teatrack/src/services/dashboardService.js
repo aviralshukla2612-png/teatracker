@@ -1,18 +1,24 @@
-import api from './api';
+import entryService from './entryService';
 
 const dashboardService = {
-  /**
-   * Get dashboard data for a given month and year.
-   * Defaults to the current month/year.
-   */
   async get(month = null, year = null) {
     const now = new Date();
-    const params = {
-      month: month ?? now.getMonth() + 1,
-      year:  year  ?? now.getFullYear(),
+    const targetMonth = month ? parseInt(month) : now.getMonth() + 1;
+    const targetYear = year ? parseInt(year) : now.getFullYear();
+
+    const { data: entries } = await entryService.getAll(targetMonth, targetYear);
+
+    const totalTea = entries.reduce((sum, e) => sum + e.tea_quantity, 0);
+    const totalCoffee = entries.reduce((sum, e) => sum + e.coffee_quantity, 0);
+    const totalExpense = entries.reduce((sum, e) => sum + e.total_expense, 0);
+
+    return {
+      data: {
+        total_tea: totalTea,
+        total_coffee: totalCoffee,
+        total_expense: totalExpense,
+      }
     };
-    const { data } = await api.get('/dashboard', { params });
-    return data;
   },
 };
 

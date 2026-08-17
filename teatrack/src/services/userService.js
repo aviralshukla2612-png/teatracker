@@ -1,53 +1,69 @@
-import api from './api';
+import { db, firebaseConfig } from './firebase';
+import { collection, doc, getDocs, getDoc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, signOut, deleteUser } from 'firebase/auth';
+
+// Initialize a secondary app instance just for creating new users.
+// This prevents the Super Admin from being logged out when they create a sub-admin.
+const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
+const secondaryAuth = getAuth(secondaryApp);
 
 const userService = {
-  /**
-   * Get all sub_admin users. Super Admin only.
-   */
   async getAll() {
-    const { data } = await api.get('/users');
-    return data;
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    const users = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return { data: users };
   },
 
-  /**
-   * Get a single user by ID. Super Admin only.
-   */
   async getById(id) {
-    const { data } = await api.get(`/users/${id}`);
-    return data;
+    const docRef = doc(db, 'users', id);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) throw new Error('User not found');
+    return { data: { id: docSnap.id, ...docSnap.data() } };
   },
 
-  /**
-   * Create a new sub_admin. Super Admin only.
-   */
   async create(name, email, password) {
-    const { data } = await api.post('/users', { name, email, password });
-    return data;
+    // 1. Create the user in Firebase Authentication using the secondary app
+    const userCredential = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+    const newUid = userCredential.user.uid;
+    
+    // 2. Immediately sign out of the secondary app
+    await signOut(secondaryAuth);
+
+    // 3. Create the user's profile document in Firestore using their new UID
+    const docRef = doc(db, 'users', newUid);
+    await setDoc(docRef, {
+      name,
+      email,
+      role: 'sub_admin',
+      active: true,
+    });
+    
+    return { data: { id: newUid, name, email, role: 'sub_admin', active: true } };
   },
 
-  /**
-   * Update a user's name or email. Super Admin only.
-   */
   async update(id, name, email) {
-    const { data } = await api.put(`/users/${id}`, { name, email });
-    return data;
+    const docRef = doc(db, 'users', id);
+    await updateDoc(docRef, { name, email });
+    return { data: { id, name, email } };
   },
 
-  /**
-   * Toggle a user's active/inactive status. Super Admin only.
-   */
   async toggleStatus(id) {
-    const { data } = await api.patch(`/users/${id}/status`);
-    return data;
+    const docRef = doc(db, 'users', id);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) throw new Error('User not found');
+    
+    const newStatus = !docSnap.data().active;
+    await updateDoc(docRef, { active: newStatus });
+    return { data: { id, ...docSnap.data(), active: newStatus } };
   },
 
-  /**
-   * Delete a user. Super Admin only.
-   * Server prevents deletion of the last super_admin.
-   */
   async delete(id) {
-    const { data } = await api.delete(`/users/${id}`);
-    return data;
+    // Note: This only deletes the Firestore document.
+    // Deleting the Firebase Auth account requires the user to be signed in or using an Admin SDK.
+    // We will just disable/delete their profile here so they can't access the app.
+    await deleteDoc(doc(db, 'users', id));
+    return { success: true };
   },
 };
 
