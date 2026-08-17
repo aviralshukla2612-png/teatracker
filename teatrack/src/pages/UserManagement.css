@@ -206,13 +206,12 @@
   .um-table td {
     border: none;
     border-bottom: 1px solid #f1f5f9;
-    position: relative;
-    padding-left: 50%;
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     text-align: right;
     min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
   }
   
   .um-table td:last-child {
@@ -221,20 +220,17 @@
   
   .um-table td::before {
     content: attr(data-label);
-    position: absolute;
-    left: 1rem;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-    text-align: left;
     font-weight: 600;
     color: var(--text-light);
     font-size: 0.85rem;
     text-transform: uppercase;
+    text-align: left;
+    margin-right: 16px;
+    flex-shrink: 0;
   }
   
   .um-actions {
     justify-content: flex-end;
-    width: 100%;
+    width: auto;
   }
 }
