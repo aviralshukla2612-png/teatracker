@@ -63,7 +63,7 @@ export default function UserManagement({ currentUser }) {
       setShowPassAdd(false);
       fetchUsers();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create sub admin');
+      setError(err.message || 'Failed to create sub admin');
     }
   };
 
@@ -87,7 +87,7 @@ export default function UserManagement({ currentUser }) {
       setEditingUser(null);
       fetchUsers();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update user');
+      setError(err.message || 'Failed to update user');
     }
   };
 
