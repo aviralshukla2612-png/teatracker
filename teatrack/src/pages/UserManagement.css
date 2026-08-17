@@ -203,15 +203,20 @@
     background: white;
   }
   
+  .um-table-wrapper {
+    overflow-x: hidden;
+  }
+
   .um-table td {
     border: none;
     border-bottom: 1px solid #f1f5f9;
-    padding: 8px 0;
+    padding: 10px 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* keep center for normal rows */
     text-align: right;
     min-height: 40px;
+    word-break: break-word; /* allows long emails to wrap */
   }
   
   .um-table td:last-child {
@@ -231,6 +236,8 @@
   
   .um-actions {
     justify-content: flex-end;
-    width: auto;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }
