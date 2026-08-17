@@ -12,7 +12,7 @@ const userService = {
   async getAll() {
     const querySnapshot = await getDocs(collection(db, 'users'));
     const users = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    return { data: users };
+    return { success: true, data: users };
   },
 
   async getById(id) {
