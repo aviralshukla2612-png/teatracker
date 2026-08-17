@@ -9,10 +9,9 @@
   background-color: #0A0F0D;
   color: white;
   z-index: 9999;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  padding: 60px;
-  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity 0.8s ease-in-out;
 }
 
@@ -22,7 +21,9 @@
 }
 
 .loader-progress {
-  justify-self: start;
+  position: absolute;
+  top: 60px;
+  left: 60px;
   font-size: 160px;
   font-weight: 300;
   line-height: 1;
@@ -32,8 +33,6 @@
 }
 
 .loader-video-wrapper {
-  justify-self: center;
-  align-self: center;
   width: 420px;
   height: 600px;
   border-radius: 16px;
@@ -50,7 +49,9 @@
 }
 
 .loader-text {
-  justify-self: start;
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
   font-size: 32px;
   font-weight: 500;
   line-height: 1.25;
@@ -58,11 +59,10 @@
 }
 
 @media (max-width: 1024px) {
-  .loader-container {
-    padding: 40px;
-  }
   .loader-progress {
     font-size: 100px;
+    top: 40px;
+    left: 40px;
   }
   .loader-video-wrapper {
     width: 340px;
@@ -70,21 +70,32 @@
   }
   .loader-text {
     font-size: 28px;
+    bottom: 40px;
+    left: 40px;
   }
 }
 
 @media (max-width: 768px) {
   .loader-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     padding: 30px;
+    box-sizing: border-box;
   }
   .loader-progress {
+    position: static;
+    justify-self: start;
     font-size: 72px;
   }
   .loader-video-wrapper {
+    justify-self: center;
+    align-self: center;
     width: 260px;
     height: 380px;
   }
   .loader-text {
+    position: static;
+    justify-self: start;
     font-size: 22px;
   }
 }
