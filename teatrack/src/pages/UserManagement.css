@@ -234,7 +234,7 @@
     flex-shrink: 0;
   }
   
-  .um-actions {
+  .um-table td.um-actions {
     display: grid;
     grid-template-columns: repeat(2, max-content);
     justify-content: flex-end;
