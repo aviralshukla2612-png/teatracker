@@ -114,28 +114,24 @@ export default function Dashboard({ entries, onAddEntry, onEditEntry, onDeleteEn
         <SummaryCard 
           title="Total Tea (Cups)" 
           mainValue={totalTea}
-          subValue="12% vs July 2026"
           icon="🍵"
           variant="tea"
         />
         <SummaryCard 
           title="Total Coffee (Cups)" 
           mainValue={totalCoffee}
-          subValue="8% vs July 2026"
           icon="☕"
           variant="coffee"
         />
         <SummaryCard 
           title="Total Cups" 
           mainValue={totalCups}
-          subValue="10% vs July 2026"
           icon="🥛"
           variant="total-cups"
         />
         <SummaryCard 
           title="Total Expense" 
           mainValue={`₹${totalExpense.toLocaleString()}`}
-          subValue="15% vs July 2026"
           icon="💰"
           variant="expense"
         />
