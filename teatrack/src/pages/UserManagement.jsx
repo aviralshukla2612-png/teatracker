@@ -130,8 +130,8 @@ export default function UserManagement({ currentUser }) {
                       </span>
                     </td>
                     <td>
-                      <span className={`um-status-badge um-status-${user.is_active ? 'active' : 'inactive'}`}>
-                        {user.is_active ? 'Active' : 'Inactive'}
+                      <span className={`um-status-badge um-status-${user.active ? 'active' : 'inactive'}`}>
+                        {user.active ? 'Active' : 'Inactive'}
                       </span>
                     </td>
                     <td className="text-right um-actions">
@@ -154,9 +154,9 @@ export default function UserManagement({ currentUser }) {
                           <button 
                             className="btn btn-sm btn-outline" 
                             onClick={() => handleToggleStatus(user.id)}
-                            title={user.is_active ? 'Deactivate' : 'Activate'}
+                            title={user.active ? 'Deactivate' : 'Activate'}
                           >
-                            {user.is_active ? '🚫' : '✅'}
+                            {user.active ? '🚫' : '✅'}
                           </button>
                           <button 
                             className="btn btn-sm um-btn-delete" 
